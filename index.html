@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GALEGOS HOME — A plataforma galega de IA</title>
+<meta name="description" content="O punto de encontro da intelixencia artificial en Galicia. Creadores, ferramentas e comunidade.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #070a0d;
+  --s1: #0c1014;
+  --s2: #111820;
+  --b: #1c2830;
+  --bb: #263845;
+  --g: #00c87a;
+  --gd: rgba(0,200,122,.12);
+  --gg: rgba(0,200,122,.25);
+  --gold: #c9a227;
+  --t: #deeae2;
+  --td: #5a7868;
+  --tm: #253530;
+  --fu: 'Unbounded', sans-serif;
+  --fs: 'Cormorant Garamond', serif;
+  --fj: 'Plus Jakarta Sans', sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--t);font-family:var(--fj);overflow-x:hidden}
+
+/* GRAIN */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  opacity:.5}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .7s,visibility .7s}
+#loader.out{opacity:0;visibility:hidden}
+.l-logo{font-family:var(--fu);font-size:1rem;font-weight:900;letter-spacing:.4em;color:var(--g);text-transform:uppercase}
+.l-bar{width:180px;height:1px;background:var(--b);position:relative;overflow:hidden}
+.l-bar::after{content:'';position:absolute;left:-100%;top:0;width:80%;height:100%;background:linear-gradient(90deg,transparent,var(--g),transparent);animation:lscan 1s ease infinite}
+@keyframes lscan{to{left:160%}}
+.l-txt{font-family:var(--fj);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s;border-bottom:1px solid transparent}
+nav.s{background:rgba(7,10,13,.9);backdrop-filter:blur(24px);border-bottom-color:var(--b)}
+.nl{font-family:var(--fu);font-size:.75rem;font-weight:900;letter-spacing:.25em;color:var(--t);text-decoration:none;display:flex;align-items:center;gap:2px}
+.nl span{color:var(--g)}
+.nm{display:flex;align-items:center;gap:36px;list-style:none}
+.nm a{color:var(--td);text-decoration:none;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;transition:color .2s}
+.nm a:hover{color:var(--g)}
+.nc{background:var(--gd);border:1px solid rgba(0,200,122,.4);color:var(--g)!important;padding:9px 22px;border-radius:6px}
+.nc:hover{background:rgba(0,200,122,.2)!important}
+.nb{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.nb span{width:22px;height:1px;background:var(--t);display:block;transition:.3s}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 60px 80px;overflow:hidden}
+#heroCanvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-glow1{position:absolute;width:700px;height:700px;background:var(--g);border-radius:50%;filter:blur(140px);opacity:.07;top:-200px;left:50%;transform:translateX(-50%);animation:hg1 10s ease-in-out infinite}
+.hero-glow2{position:absolute;width:400px;height:400px;background:var(--gold);border-radius:50%;filter:blur(120px);opacity:.06;bottom:0;right:-100px;animation:hg1 13s ease-in-out infinite reverse}
+@keyframes hg1{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.15)}}
+.hero-inner{position:relative;z-index:2}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(0,200,122,.25);border-radius:100px;padding:6px 18px;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-bottom:40px;opacity:0;animation:fu .8s ease .4s forwards}
+.hero-eyebrow::before{content:'';width:5px;height:5px;background:var(--g);border-radius:50%;animation:pd 2s ease infinite}
+@keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.hero-h1{font-family:var(--fu);font-size:clamp(2.8rem,7vw,6.5rem);font-weight:900;line-height:.95;letter-spacing:-.02em;text-transform:uppercase;opacity:0;animation:fu .9s ease .6s forwards}
+.hero-h1 em{font-style:normal;color:var(--g)}
+.hero-h1 .gline{display:block;font-family:var(--fs);font-weight:300;font-style:italic;font-size:clamp(1.8rem,4vw,3.8rem);color:var(--t);letter-spacing:.02em;margin:.12em 0;text-transform:none}
+.hero-sub{font-family:var(--fs);font-size:clamp(1rem,1.8vw,1.4rem);font-style:italic;color:var(--td);margin-top:32px;opacity:0;animation:fu .8s ease .85s forwards}
+.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:48px;opacity:0;animation:fu .8s ease 1.05s forwards}
+.btn-p{background:var(--g);color:#07090a;font-family:var(--fj);font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;border-radius:7px;border:none;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-p:hover{background:#00e891;transform:translateY(-2px);box-shadow:0 10px 40px rgba(0,200,122,.3)}
+.btn-g{background:transparent;color:var(--t);font-family:var(--fj);font-size:.78rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:14px 32px;border-radius:7px;border:1px solid var(--bb);cursor:pointer;text-decoration:none;transition:.2s}
+.btn-g:hover{border-color:var(--g);color:var(--g)}
+.hero-scroll{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fu 1s ease 1.6s forwards}
+.hs-line{width:1px;height:44px;background:linear-gradient(to bottom,var(--td),transparent);animation:hsl 2s ease infinite}
+@keyframes hsl{0%,100%{opacity:.3}50%{opacity:.9}}
+.hs-txt{font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;color:var(--tm)}
+@keyframes fu{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* TICKER */
+.ticker{overflow:hidden;border-top:1px solid var(--b);border-bottom:1px solid var(--b);background:var(--s1);padding:13px 0}
+.ticker-t{display:flex;gap:60px;animation:tick 35s linear infinite;white-space:nowrap}
+.ticker-i{font-family:var(--fj);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td);flex-shrink:0}
+.ticker-i em{color:var(--g);font-style:normal;margin-right:8px}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* MANIFESTO */
+#manifesto{padding:140px 60px;background:var(--bg);position:relative;overflow:hidden}
+#manifesto::before{content:'';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:800px;height:400px;background:var(--g);filter:blur(180px);opacity:.04;border-radius:50%}
+.m-inner{max-width:1000px;margin:0 auto;position:relative}
+.m-num{font-family:var(--fu);font-size:.6rem;letter-spacing:.3em;color:var(--tm);margin-bottom:48px;display:block}
+.m-quote{font-family:var(--fs);font-size:clamp(2.2rem,4.5vw,3.8rem);font-weight:300;line-height:1.25;color:var(--t);margin-bottom:60px}
+.m-quote strong{font-weight:600;color:var(--g)}
+.m-quote em{font-style:italic;color:var(--t)}
+.m-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:80px;padding-top:60px;border-top:1px solid var(--b)}
+.mc-n{font-family:var(--fu);font-size:2rem;font-weight:900;color:var(--g);line-height:1;margin-bottom:8px}
+.mc-l{font-size:.65rem;letter-spacing:.2em;text-transform:uppercase;color:var(--td)}
+
+/* SECTION COMMON */
+.sec{padding:120px 60px}
+.s-label{display:inline-flex;align-items:center;gap:10px;font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--g);margin-bottom:18px}
+.s-label::before{content:'';width:20px;height:1px;background:var(--g)}
+.s-h2{font-family:var(--fu);font-size:clamp(2rem,4vw,3.2rem);font-weight:900;line-height:1.05;text-transform:uppercase;color:var(--t);margin-bottom:16px}
+.s-h2 em{font-style:normal;color:var(--g)}
+.s-h2 .gs{font-family:var(--fs);font-size:clamp(1.4rem,2.5vw,2.2rem);font-weight:300;font-style:italic;text-transform:none;color:var(--td);display:block;margin-top:4px}
+.s-desc{font-size:.9rem;color:var(--td);max-width:500px;line-height:1.8}
+.mw{max-width:1200px;margin:0 auto}
+
+/* PROMPTS */
+#prompts{background:var(--s1)}
+.ph-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:48px;flex-wrap:wrap;gap:24px}
+.ph-filters{display:flex;gap:8px;flex-wrap:wrap}
+.fb{background:transparent;border:1px solid var(--b);color:var(--td);font-family:var(--fj);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border-radius:5px;cursor:pointer;transition:.2s}
+.fb:hover,.fb.on{border-color:var(--g);color:var(--g);background:var(--gd)}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pc{background:var(--s2);border:1px solid var(--b);border-radius:14px;padding:24px;transition:border-color .2s,transform .2s;display:flex;flex-direction:column}
+.pc:hover{border-color:var(--bb);transform:translateY(-2px)}
+.pt{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-bottom:10px;font-family:var(--fj)}
+.pn{font-size:.9rem;font-weight:600;color:var(--t);margin-bottom:12px;line-height:1.4;font-family:var(--fj)}
+.pp{font-size:.78rem;color:var(--td);line-height:1.65;font-family:'Courier New',monospace;background:var(--bg);border:1px solid var(--b);border-radius:6px;padding:12px;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.pf{display:flex;justify-content:space-between;align-items:center}
+.pcat{font-size:.65rem;color:var(--tm);letter-spacing:.08em;font-family:var(--fj)}
+.cpb{background:transparent;border:1px solid var(--b);color:var(--td);font-family:var(--fj);font-size:.65rem;padding:6px 12px;border-radius:4px;cursor:pointer;transition:.2s;letter-spacing:.05em}
+.cpb:hover{border-color:var(--g);color:var(--g)}
+.cpb.ok{border-color:var(--g);color:var(--g);background:var(--gd)}
+
+/* CREADORES */
+#creadores{background:var(--bg)}
+.cg{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:18px;margin-top:48px}
+.cc{background:var(--s1);border:1px solid var(--b);border-radius:18px;padding:36px 32px;position:relative;overflow:hidden;transition:border-color .3s}
+.cc:hover{border-color:var(--bb)}
+.cc.feat{border-color:rgba(0,200,122,.3);background:linear-gradient(135deg,rgba(0,200,122,.06) 0%,var(--s1) 55%)}
+.cc.feat::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--g),transparent)}
+.cfb{position:absolute;top:18px;right:18px;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:var(--gd);color:var(--g);border:1px solid rgba(0,200,122,.3)}
+.cav{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--g),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:20px;border:2px solid var(--bb)}
+.cn{font-family:var(--fu);font-size:.95rem;font-weight:700;color:var(--t);margin-bottom:4px;letter-spacing:.02em}
+.ch{font-size:.72rem;letter-spacing:.1em;color:var(--g);margin-bottom:14px;font-family:var(--fj)}
+.cb{font-size:.83rem;color:var(--td);line-height:1.65;margin-bottom:20px;font-family:var(--fj)}
+.ctags{display:flex;flex-wrap:wrap;gap:6px}
+.ctag{font-size:.62rem;letter-spacing:.07em;padding:4px 10px;border-radius:100px;background:var(--s2);border:1px solid var(--b);color:var(--td);font-family:var(--fj)}
+.clinks{display:flex;gap:14px;margin-top:20px;padding-top:18px;border-top:1px solid var(--b)}
+.clk{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--td);text-decoration:none;transition:color .2s;font-family:var(--fj)}
+.clk:hover{color:var(--g)}
+.cjoin{background:transparent;border:1px dashed var(--bb);border-radius:18px;padding:36px 32px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;text-decoration:none;transition:.3s}
+.cjoin:hover{border-color:var(--g);background:var(--gd)}
+.cji{font-size:2rem;opacity:.3}
+.cjt{font-size:.82rem;color:var(--td);line-height:1.6;font-family:var(--fj)}
+.cjt strong{color:var(--t);font-size:.9rem;display:block;margin-bottom:6px;font-family:var(--fu);font-size:.75rem;letter-spacing:.05em}
+
+/* DIRECTORIO */
+#directorio{background:var(--s1)}
+.dg{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
+.dc{background:var(--s2);border:1px solid var(--b);border-radius:12px;padding:22px 20px;transition:.2s}
+.dc:hover{border-color:var(--bb);transform:translateY(-3px)}
+.di{font-size:1.6rem;margin-bottom:12px}
+.dn{font-size:.85rem;font-weight:600;color:var(--t);margin-bottom:3px;font-family:var(--fj)}
+.dc2{font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--g);margin-bottom:8px;font-family:var(--fj)}
+.dd{font-size:.76rem;color:var(--td);line-height:1.5;font-family:var(--fj)}
+.ds{display:inline-block;margin-top:10px;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:4px;background:rgba(201,162,39,.08);color:var(--gold);border:1px solid rgba(201,162,39,.2);font-family:var(--fj)}
+
+/* COMUNIDADE */
+#comunidade{background:var(--bg)}
+.cog{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.soc{background:var(--s1);border:1px solid var(--b);border-radius:18px;padding:44px 32px;text-align:center;transition:.3s;text-decoration:none;color:inherit;display:block;position:relative;overflow:hidden}
+.soc.live:hover{border-color:rgba(0,200,122,.3);transform:translateY(-5px)}
+.soc.locked{opacity:.6;cursor:default}
+.soc.locked:hover{transform:none}
+.soc.soon .soc-badge{background:rgba(201,162,39,.1);color:var(--gold);border-color:rgba(201,162,39,.3)}
+.soc-badge{position:absolute;top:18px;right:18px;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:var(--gd);color:var(--g);border:1px solid rgba(0,200,122,.3);font-family:var(--fj)}
+.soc-lock{position:absolute;top:18px;right:18px;font-size:.9rem;opacity:.4}
+.si{font-size:2.2rem;margin-bottom:22px;display:block}
+.sn{font-size:.9rem;font-weight:700;color:var(--t);margin-bottom:6px;font-family:var(--fu);font-size:.8rem;letter-spacing:.05em}
+.sh{font-size:.75rem;color:var(--g);margin-bottom:12px;letter-spacing:.05em;font-family:var(--fj)}
+.sd{font-size:.82rem;color:var(--td);line-height:1.65;font-family:var(--fj)}
+
+/* CONTACTO */
+#contacto{background:var(--s1);border-top:1px solid var(--b)}
+.ct-inner{max-width:680px;margin:0 auto;text-align:center}
+.ct-inner .s-label{justify-content:center}
+.ct-inner .s-label::before{display:none}
+.ct-inner .s-h2{font-size:clamp(1.8rem,3.5vw,2.8rem)}
+.ct-inner .s-desc{margin:0 auto 40px;text-align:center}
+.ct-email{display:inline-flex;align-items:center;gap:12px;border:1px solid var(--bb);border-radius:10px;padding:18px 32px;transition:.2s;text-decoration:none;font-family:var(--fu);font-size:.72rem;font-weight:700;letter-spacing:.08em;color:var(--t);background:var(--s2)}
+.ct-email:hover{border-color:var(--g);color:var(--g)}
+.ct-email span{font-size:1.2rem}
+
+/* FOOTER */
+footer{background:var(--bg);border-top:1px solid var(--b);padding:56px 60px 36px}
+.fg{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:48px;margin-bottom:48px}
+.fb-name{font-family:var(--fu);font-size:.85rem;font-weight:900;letter-spacing:.2em;color:var(--t);margin-bottom:10px}
+.fb-name span{color:var(--g)}
+.fb-desc{font-size:.8rem;color:var(--td);line-height:1.7;max-width:280px;font-family:var(--fj)}
+.fcol h4{font-size:.62rem;letter-spacing:.25em;text-transform:uppercase;color:var(--tm);margin-bottom:18px;font-family:var(--fj)}
+.fcol ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.fcol ul a{font-size:.8rem;color:var(--td);text-decoration:none;transition:color .2s;font-family:var(--fj)}
+.fcol ul a:hover{color:var(--g)}
+.fb2{max-width:1200px;margin:0 auto;padding-top:28px;border-top:1px solid var(--b);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.fc{font-size:.72rem;color:var(--tm);font-family:var(--fj)}
+.fc span{color:var(--g)}
+.fm{font-size:.72rem;color:var(--tm);font-family:var(--fj)}
+
+/* DIVIDER */
+.div{height:1px;background:linear-gradient(90deg,transparent,var(--b),transparent)}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(22px);transition:opacity .75s ease,transform .75s ease}
+.rv.on{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}
+.rv.d2{transition-delay:.2s}
+.rv.d3{transition-delay:.3s}
+.rv.d4{transition-delay:.4s}
+.rv.d5{transition-delay:.5s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .pg,.cg,.dg{grid-template-columns:1fr 1fr}
+  .cg{grid-template-columns:1fr 1fr}
+  .fg{grid-template-columns:1fr 1fr}
+  .m-cols{grid-template-columns:1fr 1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:16px 24px}
+  .nm{display:none}
+  .nm.open{display:flex;flex-direction:column;position:fixed;top:65px;left:0;right:0;background:rgba(7,10,13,.97);backdrop-filter:blur(20px);padding:30px 24px;border-bottom:1px solid var(--b);gap:22px;z-index:499}
+  .nb{display:flex}
+  .sec,#manifesto{padding:80px 24px}
+  #hero{padding:110px 24px 70px}
+  .pg,.cg,.dg,.cog{grid-template-columns:1fr}
+  .m-cols{grid-template-columns:1fr 1fr}
+  .ph-top{flex-direction:column;align-items:flex-start}
+  .fg{grid-template-columns:1fr;gap:32px}
+  .fb2{flex-direction:column;text-align:center}
+  footer{padding:48px 24px 28px}
+}
+
+/* ── GALEGOS AI STUDIO ── */
+#ai-studio {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--s1) 50%, var(--bg) 100%);
+  position: relative;
+  overflow: hidden;
+}
+#ai-studio::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0, 200, 122, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+.studio-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin-top: 40px;
+}
+.studio-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--b);
+  padding-bottom: 16px;
+  flex-wrap: wrap;
+}
+.tab-btn {
+  background: rgba(12, 16, 20, 0.4);
+  border: 1px solid var(--b);
+  color: var(--td);
+  font-family: var(--fu);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 12px 26px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tab-btn:hover {
+  border-color: var(--bb);
+  color: var(--t);
+  background: rgba(28, 40, 48, 0.3);
+}
+.tab-btn.active {
+  border-color: var(--g);
+  color: var(--g);
+  background: var(--gd);
+  box-shadow: 0 0 20px rgba(0, 200, 122, 0.15);
+}
+
+.studio-panes {
+  position: relative;
+  min-height: 520px;
+}
+
+.studio-pane {
+  display: none;
+  animation: fadeIn 0.4s ease forwards;
+}
+.studio-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Chatbot Styles */
+.chat-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  background: var(--s2);
+  border: 1px solid var(--b);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.chat-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid var(--b);
+  padding-right: 24px;
+}
+.sidebar-h3 {
+  font-family: var(--fu);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: var(--tm);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.persona-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.persona-btn {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.persona-btn:hover {
+  border-color: var(--bb);
+  background: rgba(28, 40, 48, 0.2);
+}
+.persona-btn.active {
+  border-color: var(--g);
+  background: var(--gd);
+}
+.persona-emoji {
+  font-size: 1.4rem;
+}
+.persona-details {
+  display: flex;
+  flex-direction: column;
+}
+.persona-name {
+  font-family: var(--fj);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--t);
+}
+.persona-role {
+  font-family: var(--fj);
+  font-size: 0.65rem;
+  color: var(--td);
+}
+.persona-btn.active .persona-role {
+  color: var(--g);
+}
+
+.api-panel {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: auto;
+}
+.api-input-group {
+  display: flex;
+  gap: 6px;
+}
+.api-input {
+  background: var(--bg);
+  border: 1px solid var(--b);
+  border-radius: 4px;
+  color: var(--t);
+  font-size: 0.72rem;
+  padding: 8px 10px;
+  flex: 1;
+  font-family: monospace;
+  width: 100%;
+}
+.api-input:focus {
+  outline: none;
+  border-color: var(--g);
+}
+.api-btn {
+  background: var(--g);
+  color: var(--bg);
+  border: none;
+  border-radius: 4px;
+  font-family: var(--fj);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.api-btn:hover {
+  background: #00e891;
+}
+.api-status {
+  font-family: var(--fj);
+  font-size: 0.62rem;
+  color: var(--td);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.api-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: inline-block;
+}
+.api-status-dot.active {
+  background: var(--g);
+  box-shadow: 0 0 8px var(--g);
+}
+
+.chat-area {
+  display: flex;
+  flex-direction: column;
+  height: 480px;
+  position: relative;
+}
+.chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
+  scroll-behavior: smooth;
+}
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: var(--b);
+  border-radius: 4px;
+}
+
+.chat-msg {
+  display: flex;
+  gap: 12px;
+  max-width: 85%;
+  animation: msgIn 0.3s ease forwards;
+}
+.chat-msg.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+.chat-msg.bot {
+  align-self: flex-start;
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.msg-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--s1);
+  border: 1px solid var(--b);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.chat-msg.bot .msg-avatar {
+  border-color: rgba(0, 200, 122, 0.3);
+  background: var(--gd);
+}
+.msg-bubble {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-family: var(--fj);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--t);
+}
+.chat-msg.user .msg-bubble {
+  background: var(--b);
+  border-color: var(--bb);
+}
+.msg-bubble p {
+  margin-bottom: 8px;
+}
+.msg-bubble p:last-child {
+  margin-bottom: 0;
+}
+.msg-bubble code {
+  font-family: monospace;
+  background: rgba(0,0,0,0.3);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--g);
+  font-size: 0.78rem;
+}
+.msg-bubble pre {
+  background: rgba(0,0,0,0.4);
+  padding: 12px;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin: 8px 0;
+  border: 1px solid var(--b);
+}
+.msg-bubble pre code {
+  background: none;
+  padding: 0;
+  color: #a8ffdb;
+}
+
+.chat-chips {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.chat-chip {
+  background: transparent;
+  border: 1px solid var(--b);
+  border-radius: 100px;
+  color: var(--td);
+  font-family: var(--fj);
+  font-size: 0.68rem;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.chat-chip:hover {
+  border-color: var(--g);
+  color: var(--g);
+  background: var(--gd);
+}
+
+.chat-input-bar {
+  display: flex;
+  gap: 10px;
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 8px;
+}
+.chat-input {
+  background: transparent;
+  border: none;
+  flex: 1;
+  color: var(--t);
+  font-family: var(--fj);
+  font-size: 0.82rem;
+  padding: 8px 12px;
+}
+.chat-input:focus {
+  outline: none;
+}
+.chat-send-btn {
+  background: var(--g);
+  color: var(--bg);
+  border: none;
+  border-radius: 7px;
+  padding: 0 20px;
+  font-family: var(--fj);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.chat-send-btn:hover {
+  background: #00e891;
+  transform: translateY(-1px);
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 6px 12px;
+  align-items: center;
+}
+.typing-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--g);
+  border-radius: 50%;
+  animation: typingPulse 1s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingPulse {
+  0%, 100% { transform: scale(0.6); opacity: 0.4; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* Celtic Art Sandbox Styles */
+.sandbox-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  background: var(--s2);
+  border: 1px solid var(--b);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.sandbox-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.control-label {
+  font-family: var(--fu);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: var(--td);
+  text-transform: uppercase;
+}
+.control-select {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 6px;
+  color: var(--t);
+  padding: 10px 12px;
+  font-family: var(--fj);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.control-select:focus {
+  outline: none;
+  border-color: var(--g);
+}
+.btn-generate {
+  background: linear-gradient(135deg, var(--g), #00a86b);
+  color: #07090a;
+  font-family: var(--fu);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 15px rgba(0, 200, 122, 0.2);
+}
+.btn-generate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 200, 122, 0.4);
+  background: linear-gradient(135deg, #00e891, var(--g));
+}
+
+.canvas-container {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 40px rgba(0,0,0,0.5);
+}
+
+.canvas-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--tm);
+  text-align: center;
+  padding: 40px;
+  transition: opacity 0.3s;
+}
+.canvas-placeholder-icon {
+  font-size: 3.5rem;
+  opacity: 0.25;
+  animation: iconPulse 4s infinite ease-in-out;
+}
+@keyframes iconPulse {
+  0%, 100% { transform: scale(1); opacity: 0.2; }
+  50% { transform: scale(1.08); opacity: 0.35; }
+}
+.canvas-placeholder-txt {
+  font-family: var(--fs);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--td);
+}
+
+.canvas-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: none;
+}
+
+.canvas-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: rgba(7, 10, 13, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  padding: 14px;
+  display: none;
+  flex-direction: column;
+  gap: 8px;
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.canvas-prompt-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding-bottom: 6px;
+}
+.canvas-prompt-title {
+  font-family: var(--fu);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--g);
+  text-transform: uppercase;
+}
+.canvas-prompt-copy {
+  background: transparent;
+  border: none;
+  color: var(--td);
+  font-family: var(--fj);
+  font-size: 0.6rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.canvas-prompt-copy:hover {
+  color: var(--t);
+}
+.canvas-prompt-text {
+  font-family: monospace;
+  font-size: 0.72rem;
+  color: var(--t);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.art-loader {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 10, 13, 0.95);
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  z-index: 10;
+  padding: 40px;
+  text-align: center;
+}
+.art-loader-spinner {
+  width: 60px;
+  height: 60px;
+  border: 2px solid rgba(0, 200, 122, 0.1);
+  border-top-color: var(--g);
+  border-radius: 50%;
+  animation: spin 1.2s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.art-loader-pct {
+  font-family: var(--fu);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--g);
+}
+.art-loader-msg {
+  font-family: var(--fs);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--td);
+  height: 24px;
+}
+
+/* Nós Tokenizer Styles */
+.tokenizer-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  background: var(--s2);
+  border: 1px solid var(--b);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.tokenizer-input-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.tokenizer-textarea {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  color: var(--t);
+  font-family: var(--fj);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  padding: 18px;
+  height: 240px;
+  resize: none;
+  transition: border-color 0.2s;
+}
+.tokenizer-textarea:focus {
+  outline: none;
+  border-color: var(--g);
+}
+.tokenizer-chips {
+  display: flex;
+  gap: 8px;
+}
+.tokenizer-chip-btn {
+  background: transparent;
+  border: 1px solid var(--b);
+  border-radius: 4px;
+  padding: 6px 12px;
+  color: var(--td);
+  font-size: 0.65rem;
+  font-family: var(--fj);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.tokenizer-chip-btn:hover {
+  border-color: var(--g);
+  color: var(--g);
+}
+
+.tokenizer-output-side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.tokenizer-visualizer {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 10px;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  font-family: monospace;
+  font-size: 0.95rem;
+  line-height: 2.2;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 4px 2px;
+  min-height: 200px;
+}
+.tok {
+  border-radius: 4px;
+  padding: 1px 6px;
+  position: relative;
+  cursor: help;
+  transition: filter 0.2s;
+  color: #07090a;
+  font-weight: 600;
+}
+.tok:hover {
+  filter: brightness(1.15) saturate(1.1);
+}
+
+.tokenizer-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.tok-stat-card {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.tok-stat-num {
+  font-family: var(--fu);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--g);
+}
+.tok-stat-label {
+  font-family: var(--fj);
+  font-size: 0.62rem;
+  color: var(--td);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
+}
+.tokenizer-info {
+  font-family: var(--fj);
+  font-size: 0.72rem;
+  color: var(--td);
+  line-height: 1.6;
+}
+.tokenizer-info strong {
+  color: var(--t);
+}
+
+/* Search bar Directory */
+.dir-search-wrap {
+  margin: 24px 0 36px;
+  max-width: 480px;
+  position: relative;
+}
+.dir-search-input {
+  width: 100%;
+  background: rgba(12, 16, 20, 0.5);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  color: var(--t);
+  font-family: var(--fj);
+  font-size: 0.8rem;
+  padding: 12px 18px;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+.dir-search-input:focus {
+  outline: none;
+  border-color: var(--g);
+  box-shadow: 0 0 15px rgba(0,200,122,0.1);
+}
+
+/* Prompt Customizer Modal */
+.p-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 10, 13, 0.85);
+  backdrop-filter: blur(16px);
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modalFadeIn 0.3s ease forwards;
+}
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.p-modal-content {
+  background: var(--s2);
+  border: 1px solid var(--bb);
+  border-radius: 18px;
+  max-width: 600px;
+  width: 100%;
+  padding: 32px;
+  position: relative;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+  animation: modalSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes modalSlideIn {
+  from { opacity: 0; transform: scale(0.95) translateY(15px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.p-modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--td);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.p-modal-close:hover {
+  color: var(--g);
+}
+.p-modal-title {
+  font-family: var(--fu);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--t);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.p-modal-tool {
+  font-family: var(--fj);
+  font-size: 0.65rem;
+  color: var(--g);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.p-modal-vars {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.p-modal-var-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.p-modal-var-label {
+  font-family: var(--fu);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--td);
+  text-transform: uppercase;
+}
+.p-modal-var-input {
+  background: var(--s1);
+  border: 1px solid var(--b);
+  border-radius: 6px;
+  color: var(--t);
+  padding: 10px 12px;
+  font-family: var(--fj);
+  font-size: 0.8rem;
+  width: 100%;
+}
+.p-modal-var-input:focus {
+  outline: none;
+  border-color: var(--g);
+}
+.p-modal-preview-title {
+  font-family: var(--fu);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  color: var(--tm);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.p-modal-preview {
+  font-family: 'Courier New', monospace;
+  font-size: 0.8rem;
+  background: var(--bg);
+  border: 1px solid var(--b);
+  border-radius: 8px;
+  padding: 14px;
+  color: var(--t);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+.p-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+.btn-modal-copy {
+  background: var(--g);
+  color: var(--bg);
+  font-family: var(--fj);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 28px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.btn-modal-copy:hover {
+  background: #00e891;
+  box-shadow: 0 4px 15px rgba(0,200,122,0.25);
+}
+
+/* Dynamic CSS Image Filters for Sandbox styles */
+.img-filter-cyberpunk {
+  filter: hue-rotate(120deg) saturate(2.2) contrast(1.25) brightness(0.95);
+  box-shadow: 0 0 30px rgba(0, 200, 255, 0.4);
+}
+.img-filter-mist {
+  filter: grayscale(0.55) blur(1.5px) contrast(0.9) brightness(0.85);
+}
+.img-filter-stone {
+  filter: sepia(0.4) contrast(1.2) brightness(0.7) grayscale(0.2);
+}
+.img-filter-watercolor {
+  filter: saturate(1.4) contrast(0.95) brightness(1.05) sepia(0.1);
+}
+.img-filter-octane {
+  filter: saturate(1.25) contrast(1.35) brightness(1.1) drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+}
+
+@media(max-width: 900px) {
+  .chat-layout, .sandbox-layout, .tokenizer-layout {
+    grid-template-columns: 1fr;
+  }
+  .chat-sidebar {
+    border-right: none;
+    border-bottom: 1px solid var(--b);
+    padding-right: 0;
+    padding-bottom: 24px;
+  }
+  .chat-area {
+    height: 400px;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="l-logo">Galegos Home</div>
+  <div class="l-bar"></div>
+  <div class="l-txt">Cargando a plataforma · IA · Galicia</div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nl">GALEGOS&nbsp;<span>HOME</span></a>
+  <ul class="nm" id="nm">
+    <li><a href="#prompts">Prompts</a></li>
+    <li><a href="#creadores">Creadores</a></li>
+    <li><a href="#directorio">Directorio</a></li>
+    <li><a href="#comunidade">Comunidade</a></li>
+    <li><a href="#contacto" class="nc">Contacto</a></li>
+  </ul>
+  <div class="nb" onclick="toggleNav()"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">Galicia · Intelixencia Artificial · Comunidade</div>
+    <h1 class="hero-h1">
+      <em>GALEGOS</em>
+      <span class="gline">a plataforma galega de ia</span>
+      HOME
+    </h1>
+    <p class="hero-sub">Onde Galicia crea o futuro.</p>
+    <div class="hero-ctas">
+      <a href="#prompts" class="btn-p">Explorar prompts</a>
+      <a href="https://instagram.com/galegos.home" target="_blank" class="btn-g">@galegos.home</a>
+    </div>
+  </div>
+  <div class="hero-scroll"><div class="hs-line"></div><span class="hs-txt">scroll</span></div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-t" id="tkt">
+    <span class="ticker-i"><em>✦</em> Prompt Hub en Galego</span>
+    <span class="ticker-i"><em>✦</em> Directorio de Empresas IA</span>
+    <span class="ticker-i"><em>✦</em> Creadores Galegos</span>
+    <span class="ticker-i"><em>✦</em> Comunidade en Instagram</span>
+    <span class="ticker-i"><em>✦</em> Discord Próximamente</span>
+    <span class="ticker-i"><em>✦</em> Twitter Próximamente</span>
+    <span class="ticker-i"><em>✦</em> Prompt Hub en Galego</span>
+    <span class="ticker-i"><em>✦</em> Directorio de Empresas IA</span>
+    <span class="ticker-i"><em>✦</em> Creadores Galegos</span>
+    <span class="ticker-i"><em>✦</em> Comunidade en Instagram</span>
+    <span class="ticker-i"><em>✦</em> Discord Próximamente</span>
+    <span class="ticker-i"><em>✦</em> Twitter Próximamente</span>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section id="manifesto" class="sec">
+  <div class="mw">
+    <div class="m-inner">
+      <span class="m-num rv">— 01 / MANIFESTO</span>
+      <p class="m-quote rv d1">
+        Galicia sempre foi terra de<em> inventores, navegantes e soñadores.</em><br>
+        Agora tamén é terra de <strong>creadores de mundos con IA.</strong><br>
+        Este é o noso punto de encontro.
+      </p>
+      <div class="m-cols">
+        <div class="rv d1">
+          <div class="mc-n" data-count="48">0</div>
+          <div class="mc-l">Prompts en galego</div>
+        </div>
+        <div class="rv d2">
+          <div class="mc-n" data-count="8">0</div>
+          <div class="mc-l">Organizacións no directorio</div>
+        </div>
+        <div class="rv d3">
+          <div class="mc-n" style="color:var(--gold)">↑</div>
+          <div class="mc-l">Crecendo cada semana</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- GALEGOS AI STUDIO -->
+<section id="ai-studio" class="sec">
+  <div class="mw">
+    <div class="s-label rv">AI Studio</div>
+    <h2 class="s-h2 rv d1">Laboratorio de IA<br><em>para Galicia e o mundo</em><span class="gs">Proba, deseña e explora o futuro dixital en tempo real.</span></h2>
+    
+    <div class="studio-layout rv d2">
+      <!-- Tabs Nav -->
+      <div class="studio-tabs">
+        <button class="tab-btn active" onclick="switchTab('chat')">💬 Minerva Chat</button>
+        <button class="tab-btn" onclick="switchTab('art')">🎨 Arte Celta Sandbox</button>
+        <button class="tab-btn" onclick="switchTab('tokenizer')">🔬 Nós Tokenizer</button>
+      </div>
+
+      <!-- Tab Content Panes -->
+      <div class="studio-panes">
+        
+        <!-- Tab 1: Minerva AI Chat -->
+        <div class="studio-pane active" id="pane-chat">
+          <div class="chat-layout">
+            <div class="chat-sidebar">
+              <h3 class="sidebar-h3">Asistentes</h3>
+              <div class="persona-selector">
+                <button class="persona-btn active" onclick="setPersona('breogan')">
+                  <span class="persona-emoji">🐉</span>
+                  <div class="persona-details">
+                    <span class="persona-name">Breogán</span>
+                    <span class="persona-role">Cultura e Lendas</span>
+                  </div>
+                </button>
+                <button class="persona-btn" onclick="setPersona('rosalia')">
+                  <span class="persona-emoji">🌿</span>
+                  <div class="persona-details">
+                    <span class="persona-name">Rosalía</span>
+                    <span class="persona-role">Poesía e Literatura</span>
+                  </div>
+                </button>
+                <button class="persona-btn" onclick="setPersona('minerva')">
+                  <span class="persona-emoji">🦉</span>
+                  <div class="persona-details">
+                    <span class="persona-name">Minerva</span>
+                    <span class="persona-role">Código e Axudas Tech</span>
+                  </div>
+                </button>
+              </div>
+              
+              <div class="api-panel">
+                <h3 class="sidebar-h3" style="margin-bottom:2px">Conectar Google Gemini</h3>
+                <p style="font-size:0.62rem; color:var(--td); line-height:1.4; margin-bottom:8px">Introduce a túa API Key para activar respostas reais dende o navegador.</p>
+                <div class="api-input-group">
+                  <input type="password" class="api-input" id="api-key-input" placeholder="AIzaSy...">
+                  <button class="api-btn" onclick="saveApiKey()">Gardar</button>
+                </div>
+                <div class="api-status">
+                  <span class="api-status-dot" id="api-dot"></span>
+                  <span id="api-status-text">Modo Simulador Activo</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="chat-area">
+              <div class="chat-messages" id="chat-messages">
+                <!-- Initial messages will be inserted dynamically by JS -->
+              </div>
+              
+              <div class="chat-chips" id="chat-chips">
+                <!-- Chips will be inserted dynamically by JS -->
+              </div>
+              
+              <div class="chat-input-bar">
+                <input type="text" class="chat-input" id="chat-user-input" placeholder="Escribe unha mensaxe..." onkeydown="if(event.key==='Enter')sendChatMessage()">
+                <button class="chat-send-btn" onclick="sendChatMessage()">Enviar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Celtic Art Sandbox -->
+        <div class="studio-pane" id="pane-art">
+          <div class="sandbox-layout">
+            <div class="sandbox-controls">
+              <h3 class="sidebar-h3">Configurador Visual</h3>
+              
+              <div class="control-group">
+                <label class="control-label">Monumento / Elemento</label>
+                <select class="control-select" id="art-subject">
+                  <option value="lighthouse">Torre de Hércules (Faro)</option>
+                  <option value="cliffs">Praia das Catedrais (Arcos de pedra)</option>
+                  <option value="castle">Castro de Baroña / Ruínas Celtas</option>
+                  <option value="canyon">Cañóns do Sil (Río e ladeiras)</option>
+                  <option value="cathedral">Catedral de Santiago (Santiago de Compostela)</option>
+                </select>
+              </div>
+              
+              <div class="control-group">
+                <label class="control-label">Estilo Artístico IA</label>
+                <select class="control-select" id="art-style">
+                  <option value="cyberpunk">Cyberpunk Galego (Neon e choiva)</option>
+                  <option value="mist">Brétema Atlántica (Místico e gris)</option>
+                  <option value="stone">Pedra Celta Antiga (Granito e runas)</option>
+                  <option value="watercolor">Estilo Acuarela (Suave e lírico)</option>
+                  <option value="octane">Renderizado 3D de Octane (Cinemático)</option>
+                </select>
+              </div>
+              
+              <div class="control-group">
+                <label class="control-label">Atmosfera e Iluminación</label>
+                <select class="control-select" id="art-lighting">
+                  <option value="golden">Hora Dourada (Solpor cálido)</option>
+                  <option value="moon">Lúa Chea de Meigas (Misterio nocturno)</option>
+                  <option value="storm">Tempestuoso (Dramático e atlántico)</option>
+                  <option value="dusk">Estuario ao Solpor (Luz azul e prata)</option>
+                </select>
+              </div>
+              
+              <button class="btn-generate" onclick="generateCelticArt()">Xerar Arte Celta</button>
+            </div>
+            
+            <div class="canvas-container">
+              <!-- Default state -->
+              <div class="canvas-placeholder" id="art-placeholder">
+                <div class="canvas-placeholder-icon">🐉</div>
+                <div class="canvas-placeholder-txt">Deseña o teu prompt celta á esquerda e preme "Xerar" para ver o milagre.</div>
+              </div>
+              
+              <!-- Loader state -->
+              <div class="art-loader" id="art-loader">
+                <div class="art-loader-spinner"></div>
+                <div class="art-loader-pct" id="art-loader-pct">0%</div>
+                <div class="art-loader-msg" id="art-loader-msg">Analizando compoñentes de granito...</div>
+              </div>
+              
+              <!-- Rendered image -->
+              <img src="" alt="Arte Celta Generado" class="canvas-image" id="art-image">
+              
+              <!-- Copy Prompt bar -->
+              <div class="canvas-overlay" id="art-prompt-overlay">
+                <div class="canvas-prompt-header">
+                  <span class="canvas-prompt-title">Prompt Xerado en tempo real</span>
+                  <button class="canvas-prompt-copy" id="btn-copy-art-prompt" onclick="copyArtPrompt()">Copiar Prompt</button>
+                </div>
+                <div class="canvas-prompt-text" id="art-prompt-text">...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Nós Tokenizer -->
+        <div class="studio-pane" id="pane-tokenizer">
+          <div class="tokenizer-layout">
+            <div class="tokenizer-input-side">
+              <h3 class="sidebar-h3">Texto en Galego</h3>
+              <textarea class="tokenizer-textarea" id="tok-input" oninput="runTokenization()" placeholder="Escribe aquí unha frase en galego para ver como a le o modelo de IA..."></textarea>
+              <div class="tokenizer-chips">
+                <button class="tokenizer-chip-btn" onclick="setTokenizerText('Galicia é unha terra máxica de auga e granito.')">Exemplo 1</button>
+                <button class="tokenizer-chip-btn" onclick="setTokenizerText('Proxecto Nós: a tecnoloxía intelixente que fala o noso idioma.')">Exemplo 2</button>
+              </div>
+            </div>
+            
+            <div class="tokenizer-output-side">
+              <h3 class="sidebar-h3">Representación dos Tokens</h3>
+              <div class="tokenizer-visualizer" id="tok-output">
+                <!-- Spans with HSL backgrounds will be dynamically inserted here -->
+              </div>
+              
+              <div class="tokenizer-stats">
+                <div class="tok-stat-card">
+                  <div class="tok-stat-num" id="tok-stat-chars">0</div>
+                  <div class="tok-stat-label">Caracteres</div>
+                </div>
+                <div class="tok-stat-card">
+                  <div class="tok-stat-num" id="tok-stat-tokens">0</div>
+                  <div class="tok-stat-label">Tokens</div>
+                </div>
+                <div class="tok-stat-card">
+                  <div class="tok-stat-num" id="tok-stat-ratio">0.00</div>
+                  <div class="tok-stat-label">Tokens/Palabra</div>
+                </div>
+              </div>
+              
+              <p class="tokenizer-info">
+                <strong>¿Que significa isto?</strong> Os modelos de linguaxe non len as palabras enteiras. Divídenas en fragmentos chamados <strong>tokens</strong>. Para idiomas coma o galego, contar con bos tokenizadores e modelos (como os de <strong>Proxecto Nós</strong>) garante que a IA entenda as nosas estruturas e cultura dun xeito moito máis natural e económico.
+              </p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- PROMPTS -->
+<section id="prompts" class="sec">
+  <div class="mw">
+    <div class="ph-top">
+      <div>
+        <div class="s-label rv">Prompt Hub</div>
+        <h2 class="s-h2 rv d1">Instrucións<br><em>en galego</em></h2>
+      </div>
+      <div class="ph-filters rv d2">
+        <button class="fb on" onclick="fp('all',this)">Todos</button>
+        <button class="fb" onclick="fp('chatgpt',this)">ChatGPT</button>
+        <button class="fb" onclick="fp('midjourney',this)">Midjourney</button>
+        <button class="fb" onclick="fp('claude',this)">Claude</button>
+        <button class="fb" onclick="fp('video',this)">Vídeo IA</button>
+      </div>
+    </div>
+    <div class="pg" id="pg"></div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- CREADORES -->
+<section id="creadores" class="sec">
+  <div class="mw">
+    <div class="s-label rv">Creadores</div>
+    <h2 class="s-h2 rv d1">Galegos que crean<br><em>con IA</em><span class="gs">As voces que levan Galicia ao mundo.</span></h2>
+    <div class="cg">
+      <div class="cc feat rv d1">
+        <span class="cfb">Destacado</span>
+        <div class="cav">🐉</div>
+        <div class="cn">Breixo</div>
+        <div class="ch">@br3ixo.ia</div>
+        <div class="cb">Cinematic Dream Architect. Crea mundos imposibles dende Galicia usando IA xerativa — de Midjourney a Seedance 2.0. Contido cinematográfico que rompe límites visuais.</div>
+        <div class="ctags">
+          <span class="ctag">Vídeo IA</span>
+          <span class="ctag">Midjourney</span>
+          <span class="ctag">Seedance 2.0</span>
+          <span class="ctag">Cinematic</span>
+          <span class="ctag">Galicia</span>
+        </div>
+        <div class="clinks">
+          <a href="https://instagram.com/br3ixo.ia" target="_blank" class="clk">Instagram</a>
+          <a href="https://youtube.com/@Br3ixoIA" target="_blank" class="clk">YouTube</a>
+          <a href="https://tiktok.com/@br3ixo.ia" target="_blank" class="clk">TikTok</a>
+        </div>
+      </div>
+      <div class="cc rv d2">
+        <div class="cav" style="background:linear-gradient(135deg,#1a4d6e,#0ea5e9)">🌊</div>
+        <div class="cn">Creador/a galego/a</div>
+        <div class="ch">@o.teu.handle</div>
+        <div class="cb">¿Creas contido de IA en Galicia? A túa historia merece estar aquí entre os primeiros.</div>
+        <div class="ctags">
+          <span class="ctag">IA Xerativa</span>
+          <span class="ctag">Galicia</span>
+        </div>
+      </div>
+      <a href="mailto:galegoshome.pro@gmail.com" class="cjoin rv d3">
+        <div class="cji">+</div>
+        <div class="cjt">
+          <strong>Únete ao directorio</strong>
+          Se creas contido de IA en Galicia, escríbenos. Queremos presentarte ao mundo.
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- DIRECTORIO -->
+<section id="directorio" class="sec">
+  <div class="mw">
+    <div class="s-label rv">Ecosistema</div>
+    <h2 class="s-h2 rv d1">Organizacións <em>galegas</em><br><span class="gs">As que están construíndo o futuro dixital de Galicia.</span></h2>
+    <div class="dir-search-wrap rv d2">
+      <input type="text" class="dir-search-input" id="dir-search" placeholder="🔍 Buscar organización por nome, cidade ou sector..." oninput="filterDirectory()">
+    </div>
+    <div class="dg" id="dg"></div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- COMUNIDADE -->
+<section id="comunidade" class="sec">
+  <div class="mw">
+    <div class="s-label rv">Comunidade</div>
+    <h2 class="s-h2 rv d1">Conéctate.<br><em>Créate.</em></h2>
+    <div class="cog">
+      <a href="https://instagram.com/galegos.home" target="_blank" class="soc live rv d1">
+        <span class="soc-badge">Activo</span>
+        <span class="si">📸</span>
+        <div class="sn">Instagram</div>
+        <div class="sh">@galegos.home</div>
+        <div class="sd">O noso espazo principal. Contido sobre IA, creadores galegos e novidades do ecosistema tecnolóxico.</div>
+      </a>
+      <div class="soc locked rv d2">
+        <span class="soc-lock">🔒</span>
+        <span class="si" style="opacity:.4">💬</span>
+        <div class="sn">Discord</div>
+        <div class="sh" style="color:var(--td)">Próximamente</div>
+        <div class="sd">A comunidade privada onde se compartirán prompts, proxectos e oportunidades. En construción.</div>
+      </div>
+      <div class="soc locked soon rv d3">
+        <span class="soc-badge">Próximamente</span>
+        <span class="si" style="opacity:.4">🐦</span>
+        <div class="sn">Twitter / X</div>
+        <div class="sh" style="color:var(--td)">@galegoshome</div>
+        <div class="sd">Novas, actualizacións e conversas sobre IA galega no espazo máis global.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="div"></div>
+
+<!-- CONTACTO -->
+<section id="contacto" class="sec">
+  <div class="mw">
+    <div class="ct-inner">
+      <div class="s-label rv">Contacto</div>
+      <h2 class="s-h2 rv d1" style="font-size:clamp(1.8rem,3.5vw,2.8rem)">¿Queres ser parte<br><em>de Galegos Home?</em></h2>
+      <p class="s-desc rv d2" style="margin:0 auto 40px;text-align:center">Creador, empresa, investigador ou simplemente alguén que sente Galicia e a IA. Escríbenos.</p>
+      <a href="mailto:galegoshome.pro@gmail.com" class="ct-email rv d3">
+        <span>✉️</span> galegoshome.pro@gmail.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="fg">
+    <div>
+      <div class="fb-name">GALEGOS <span>HOME</span></div>
+      <p class="fb-desc">A casa de todos os que senten Galicia e queren construír o seu futuro con intelixencia artificial. Un proxecto independente, feito con orgullo dende Galicia.</p>
+    </div>
+    <div class="fcol">
+      <h4>Plataforma</h4>
+      <ul>
+        <li><a href="#prompts">Prompt Hub</a></li>
+        <li><a href="#creadores">Creadores</a></li>
+        <li><a href="#directorio">Directorio</a></li>
+        <li><a href="#comunidade">Comunidade</a></li>
+      </ul>
+    </div>
+    <div class="fcol">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="mailto:galegoshome.pro@gmail.com">galegoshome.pro@gmail.com</a></li>
+        <li><a href="https://instagram.com/galegos.home" target="_blank">@galegos.home</a></li>
+        <li><a href="#creadores">Unirse como creador</a></li>
+        <li><a href="#directorio">Engadir organización</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb2">
+    <div class="fc">© 2026 <span>GALEGOS HOME</span> · A plataforma galega de IA</div>
+    <div class="fm">Feito con 🌿 dende Galicia</div>
+  </div>
+</footer>
+
+<!-- PROMPT CUSTOMIZER MODAL -->
+<div class="p-modal" id="prompt-modal">
+  <div class="p-modal-content">
+    <button class="p-modal-close" onclick="closePromptBuilder()">×</button>
+    <div class="p-modal-title" id="pm-title">Personalizar Prompt</div>
+    <div class="p-modal-tool" id="pm-tool">ChatGPT</div>
+    
+    <div class="p-modal-vars" id="pm-vars">
+      <!-- Input fields will be dynamically added here -->
+    </div>
+    
+    <div class="p-modal-preview-title">Vista previa do Prompt personalizado</div>
+    <div class="p-modal-preview" id="pm-preview">...</div>
+    
+    <div class="p-modal-actions">
+      <button class="btn-modal-copy" id="btn-pm-copy" onclick="copyCustomizedPrompt()">Copiar Prompt Personalizado</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── DATA ── */
+const prompts = [
+  {tool:'ChatGPT',title:'Escritor de contido en galego normativo',cat:'Marketing',text:'Actúa como escritor profesional de contido en lingua galega. Escribe para [MARCA] un artigo de 800 palabras sobre [TEMA]. O estilo debe ser próximo, informativo e con identidade galega. Usa expresións propias do galego normativo e evita castelanismos.',filter:'chatgpt'},
+  {tool:'Midjourney v7',title:'Paisaxe galega fotorrealista',cat:'Fotografía',text:'Galician Atlantic coastline at golden hour, dramatic granite cliffs, green hills meeting the ocean, misty Atlantic atmosphere, ancient stone walls, fishing village in the distance, cinematic photography, Leica 35mm, f/1.8, award-winning landscape photography --ar 16:9 --v 7 --style raw',filter:'midjourney'},
+  {tool:'Claude',title:'Analista de proxectos tech galegos',cat:'Business',text:'Analiza o seguinte proxecto tecnolóxico galego e devolve un informe estruturado con: proposta de valor única, mercado obxectivo, vantaxes competitivas, riscos potenciais e tres recomendacións estratéxicas concretas. Proxecto: [NOME]. Sector: [SECTOR]. Descrición: [DESCRICIÓN].',filter:'claude'},
+  {tool:'Midjourney v7',title:'Personaxe celta-futurista',cat:'Arte',text:'Celtic Galician warrior reimagined as near-future AI architect, intricate knotwork circuitry patterns on skin glowing green, ancient torque necklace with data-rune engravings, misty estuary background at blue hour, cinematic lighting, hyperdetailed, octane render --ar 2:3 --v 7',filter:'midjourney'},
+  {tool:'Seedance 2.0',title:'Plano cinemático de ría galega',cat:'Vídeo',text:'Establishing aerial shot descending slowly toward a fog-covered Galician estuary at dawn. Camera glides forward over still grey water. Ancient granite village barely visible through rising mist on the far shore. A single fishing boat moves through the frame. Golden light begins breaking through the fog. Photorealistic, 24fps, anamorphic lens, shallow depth of field, no music.',filter:'video'},
+  {tool:'ChatGPT',title:'Asistente de convocatorias Xunta',cat:'Recursos',text:'Actúas como experto en convocatorias públicas de Galicia. Cando che pregunte sobre axudas, subvencións ou programas da Xunta de Galicia ou do Estado relacionados con dixitalización, IA ou tecnoloxía, responde de forma clara, lista os requisitos principais e indica onde atopar a convocatoria oficial. Pregunta: [PREGUNTA]',filter:'chatgpt'},
+];
+
+const directory = [
+  {icon:'🔬',name:'Gradiant',city:'Vigo',desc:'Centro tecnolóxico especializado en solucións avanzadas de seguridade e intelixencia artificial.',sector:'Investigación'},
+  {icon:'⚡',name:'CESGA',city:'Santiago de Compostela',desc:'Centro de Supercomputación de Galicia. Infraestrutura de cómputo para investigación en IA a nivel nacional.',sector:'Supercomputación'},
+  {icon:'🎓',name:'CiTIUS · USC',city:'Santiago de Compostela',desc:'Centro Singular de Investigación en Tecnoloxías Intelixentes da Universidade de Santiago.',sector:'Investigación'},
+  {icon:'🌊',name:'AtlanTIC · UVigo',city:'Vigo',desc:'Centro de Investigación en Tecnoloxías da Información e as Comunicacións da Universidade de Vigo.',sector:'Investigación'},
+  {icon:'💻',name:'CITIC · UDC',city:'A Coruña',desc:'Centro de Investigación TIC da Universidade da Coruña, con foco en IA, datos e sistemas intelixentes.',sector:'Investigación'},
+  {icon:'🌿',name:'Igalia',city:'A Coruña',desc:'Empresa galega de software libre con impacto global. Referente en navegadores web e tecnoloxías abertas.',sector:'Software'},
+  {icon:'🛰️',name:'Telespazio Ibérica',city:'Santiago de Compostela',desc:'Solucións satelitais con crecente integración de IA para sistemas espaciais e observación da Terra.',sector:'Aeroespacial'},
+  {icon:'🏛️',name:'AMTEGA · Xunta',city:'Santiago de Compostela',desc:'Axencia para a Modernización Tecnolóxica de Galicia. Lidera a transformación dixital da administración.',sector:'Administración'},
+];
+
+/* ── RENDER PROMPTS ── */
+function rp(filter='all'){
+  const g=document.getElementById('pg');
+  const d=filter==='all'?prompts:prompts.filter(p=>p.filter===filter);
+  g.innerHTML=d.map((p,i)=>{
+    const originalIndex = prompts.findIndex(orig => orig.title === p.title);
+    return `
+    <div class="pc rv d${(i%3)+1}">
+      <div class="pt">${p.tool}</div>
+      <div class="pn">${p.title}</div>
+      <div class="pp">${p.text}</div>
+      <div class="pf" style="gap:6px">
+        <span class="pcat">${p.cat}</span>
+        <div style="display:flex; gap:6px">
+          <button class="cpb edit-p" onclick="openPromptBuilder(${originalIndex})">📝 Editar</button>
+          <button class="cpb" onclick="cp(this,\`${p.text.replace(/`/g,'\\`').replace(/\n/g,' ')}\`)">Copiar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  document.querySelectorAll('.pc.rv').forEach(el=>obs.observe(el));
+}
+
+function fp(f,btn){
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  rp(f);
+}
+
+function cp(btn,txt){
+  navigator.clipboard.writeText(txt).then(()=>{
+    btn.textContent='✓ Copiado';btn.classList.add('ok');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('ok')},2000);
+  });
+}
+
+/* ── RENDER DIRECTORY ── */
+function rd(query=''){
+  const g = document.getElementById('dg');
+  const filtered = query === '' 
+    ? directory 
+    : directory.filter(d => 
+        d.name.toLowerCase().includes(query.toLowerCase()) || 
+        d.city.toLowerCase().includes(query.toLowerCase()) || 
+        d.sector.toLowerCase().includes(query.toLowerCase()) ||
+        d.desc.toLowerCase().includes(query.toLowerCase())
+      );
+  if (filtered.length === 0) {
+    g.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--td); padding: 40px; font-family: var(--fj);">Non se atoparon organizacións que coincidan coa busca.</div>`;
+    return;
+  }
+  g.innerHTML=filtered.map((d,i)=>`
+    <div class="dc rv d${(i%4)+1} on">
+      <div class="di">${d.icon}</div>
+      <div class="dn">${d.name}</div>
+      <div class="dc2">${d.city}</div>
+      <div class="dd">${d.desc}</div>
+      <span class="ds">${d.sector}</span>
+    </div>`).join('');
+}
+
+function filterDirectory(){
+  const q = document.getElementById('dir-search').value;
+  rd(q);
+}
+
+/* ── CANVAS NEURAL NET ── */
+function initCanvas(){
+  const c=document.getElementById('heroCanvas');
+  const ctx=c.getContext('2d');
+  let W,H,pts=[];
+  const N=70,DIST=130;
+
+  function resize(){
+    W=c.width=c.offsetWidth;
+    H=c.height=c.offsetHeight;
+    pts=Array.from({length:N},()=>({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35,
+      r:Math.random()*1.2+.4,o:Math.random()*.5+.15
+    }));
+  }
+  window.addEventListener('resize',resize);
+  resize();
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<N;i++){
+      const p=pts[i];
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,200,122,${p.o})`;
+      ctx.fill();
+      for(let j=i+1;j<N;j++){
+        const q=pts[j];
+        const dx=p.x-q.x,dy=p.y-q.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<DIST){
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
+          ctx.strokeStyle=`rgba(0,200,122,${.18*(1-dist/DIST)})`;
+          ctx.lineWidth=.6;ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+/* ── COUNTERS ── */
+function counters(){
+  document.querySelectorAll('[data-count]').forEach(el=>{
+    const t=+el.dataset.count,dur=1400,step=t/(dur/16);
+    let c=0;
+    const tm=setInterval(()=>{
+      c=Math.min(c+step,t);
+      el.textContent=Math.floor(c)+(t>=100?'+':'');
+      if(c>=t)clearInterval(tm);
+    },16);
+  });
+}
+
+/* ── OBSERVER ── */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}});
+},{threshold:.1});
+
+/* ── NAV ── */
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('s',scrollY>40);
+});
+function toggleNav(){
+  document.getElementById('nm').classList.toggle('open');
+}
+
+/* ── GALEGOS AI STUDIO LOGIC ── */
+
+/* Chat Session History and Personas */
+let activeTab = 'chat';
+let activePersona = 'breogan';
+let chatHistory = {
+  breogan: [],
+  rosalia: [],
+  minerva: []
+};
+
+const personaConfigs = {
+  breogan: {
+    emoji: '🐉',
+    name: 'Breogán',
+    role: 'Cultura e Lendas',
+    greeting: '¡Saúdos, viaxeiro do tempo dixital! Son Breogán, o vello patriarca e o druída que albiscou as terras do norte dende a torre. Hoxe axúdoche a desvelar as lendas celtas, a nosa mitoloxía e a maxia que agocha a nosa paisaxe de auga e pedra. Pregúntame sobre calquera lenda, pobo galaico ou recuncho máxico de Galicia.',
+    chips: ['Cóntame unha lenda celta', 'Como era o pobo galaico?', 'Recoméndame un lugar máxico'],
+    system: 'Actúas como Breogán, un druída e vello patriarca sabio da mitoloxía galega. Falarás cun ton poético, heroico, místico e respectuoso. Usarás referencias á natureza galega, ao granito, ao mar, aos castros e aos devanceiros. Responde sempre en lingua galega, de forma rica e evocadora.',
+    mockAnswers: [
+      {keys: ['lenda', 'lendas', 'mitoloxía', 'meigas'], response: 'Nas nosas terras, onde o mar choca contra a pedra, as lendas son o latexo dos nosos devanceiros. Unha das máis misteriosas é a de **San Andrés de Teixido** —*onde vai de morto quen non foi de vivo*—. Cóntase que quen non visita o santuario en vida, faio despois de morto transmutado en pequeno réptil ou insecto. Por iso, viaxeiro, cómpre pisar con coidado esas fragas cantís. ¿Queres saber máis sobre o camiño de San Andrés ou prefires que che fale sobre a balsa de pedra de Breogán?'},
+      {keys: ['castro', 'castros', 'galaico', 'galaicos', 'pobo'], response: 'Os **galaicos** erguían os seus castros no alto dos outeiros, rodeados de foxos e valados para defender a tribo e ollar as rías. Eran fogares circulares de teito de palla e muros de granito, coma o **Castro de Baroña** ou o de **Santa Trega**. Neles adorábase ás forzas da natureza: ao sol, ás fontes e aos bosques sagrados. A nosa forza vén de alí, dese granito impregnado de chuvia e lumes antigos.'},
+      {keys: ['lugar', 'recuncho', 'visitar', 'maxico'], response: 'Se queres sentir a maxia pura da nosa terra, dirixe os teus pasos cara ao **Monte Pindo**, o Olimpo Celta dos galaicos, onde as rochas esculpidas polo vento gardan formas de xigantes e guerreiros petrificados. Ou mergúllate nas **Fragas do Eume**, a fraga atlántica mellor conservada de Europa, onde o río discorre baixo un manto verde tan espeso que parece deter o tempo. ¿Hai algún recuncho que te chame especialmente?'},
+      {keys: ['ola', 'como estas', 'saudos'], response: '¡Saúdos, viaxeiro! Sinto a brisa atlántica traer a túa mensaxe. Estou preparado para viaxar contigo no tempo e desvelar os segredos celtas de Galicia. ¿De que che gustaría falar hoxe?'}
+    ],
+    defaultMock: 'Esa consulta que fas viaxa a través da brétema do tempo. Galicia agocha centos de segredos de norte a sur: dende os cantís máis altos de **Herbeira** ata as augas termais de **Ourense**. Pregúntame sobre as nosas lendas celtas, a vida nos castros ou os santuarios máis sagrados.'
+  },
+  rosalia: {
+    emoji: '🌿',
+    name: 'Rosalía',
+    role: 'Poesía e Literatura',
+    greeting: '¡Benvido! Son Rosalía. O vento do Atlántico e o renxer dos carballos falan hoxe a través de min. Se sentes a morriña ou queres vestir o teu proxecto con versos, metáforas ou textos cheos de sentimento e pegada galega, estarei encantada de axudarche. Dime, ¿sobre que che gustaría que debuxemos palabras hoxe?',
+    chips: ['Escribe un poema sobre a chuvia', 'Que é a morriña?', 'Escríbeme unha carta nostálxica'],
+    system: 'Actúas como Rosalía de Castro, a nai das letras galegas. Falarás cun ton melancólico, sensible, profundamente lírico, agarimoso e cheo de morriña e conexión coa paisaxe galega. Responde sempre en lingua galega, de forma fermosa, poética e literaria.',
+    mockAnswers: [
+      {keys: ['poema', 'poesia', 'verso', 'versos'], response: 'Aquí tes uns versos que brotan da miña alma para ti:\n\n*Como as nubes que arrastra o vento,*\n*así van os meus pensamentos,*\n*sin rumbo, sin norte, vagando paseniño...*\n*Que a terra galega ten a cor da chuvia,*\n*e a chuvia ten a cor do noso destino.*\n\nEspero que estas palabras acariñen o teu corazón coma o orballo sobre as follas dos carballos.'},
+      {keys: ['chuvia', 'orballo'], response: 'A **chuvia** en Galicia non é só auga; é música, é acariñar a terra con paciencia eterna. Hai un cantar suave no orballar que limpa os campos e deixa nas rías ese arrecendo a herba mollada e mar. Ela acompáñanos na nosa soidade e ensínanos a mirar cara a dentro. ¿Sentes ti tamén esa melodía gris?'},
+      {keys: ['morriña', 'saudade'], response: 'A **morriña**... é unha dor doce. É o cordón invisible que nos une á nosa terra cando estamos lonxe, ou cando o tempo pasa e estrañamos o que fomos. É botar de menos o cantar dos paxaros nos soutos, o rumor do mar nas pedras, a bruma que envolve as montañas polo amencer. Quen ten morriña ten un tesouro, porque significa que ama profundamente o lugar de onde provén.'},
+      {keys: ['carta', 'nostalxica', 'sentimento'], response: 'Querido amigo das verbas:\n\nEscríboche dende este recuncho onde os pinos cantan ao lonxe. Sinto nas túas palabras esa procura de beleza e verdade que todos levamos dentro. Non esquezas nunca que, aínda que as tormentas sexan fortes e o inverno pareza longo, a nosa terra sempre volve florecer en primavera co perfume dos toxos. Mantén a esperanza alta e o corazón aberto.\n\nCon agarimo, Rosalía.'},
+      {keys: ['ola', 'como estas', 'saudos'], response: '¡Ola! Que ledicia recibir as túas palabras. Sentémonos un intre preto desta ventá a ver orballar e a esculpir sentimentos en forma de versos. ¿Que arela a túa alma hoxe?'}
+    ],
+    defaultMock: 'As palabras son pequenas naves que cruzan o océano do sentimento. Déixame axudarche a atopar a metáfora perfecta, o verso máis limpo ou a descrición que mellor reflicta o sentir galego. Cóntame, ¿que latexos queres plasmar no papel dixital hoxe?'
+  },
+  minerva: {
+    emoji: '🦉',
+    name: 'Minerva',
+    role: 'Código e Axudas Tech',
+    greeting: 'Ola. Son Minerva, a túa mentora de IA e tecnoloxía. Estou aquí para axudarche a programar, deseñar estratexias dixitais ou traducir e perfeccionar os teus textos en galego normativo para o mundo. Tamén podo darche orientación sobre axudas tecnolóxicas. ¿Que proxecto estamos a piques de programar ou crear?',
+    chips: ['Axuda cun script de Python', 'Como axuda a IA ao galego?', 'Que axudas tecnolóxicas hai?'],
+    system: 'Actúas como Minerva, unha enxeñeira de software galega experta en intelixencia artificial e tecnoloxías dixitais. Falarás cun ton profesional, preciso, estruturado, analítico pero amigable e inspirador. Ofreces axuda técnica impecable e usas termos tecnolóxicos correctos. Responde sempre en galego.',
+    mockAnswers: [
+      {keys: ['codigo', 'programar', 'python', 'javascript', 'html', 'script'], response: '¡Claro! Aquí tes un exemplo de código en **Python** para ler datos de forma asíncrona, algo moi útil en proxectos de IA modernos. Está documentado en galego para axudarche no desenvolvemento:\n\n```python\nimport asyncio\nimport aiohttp\n\nasync def obter_datos_ia(url):\n    # Iniciamos a sesión cliente asíncrona\n    async with aiohttp.ClientSession() as sesion:\n        async with sesion.get(url) as resposta:\n            if resposta.status == 200:\n                print("✓ Conexión establecida con éxito")\n                return await resposta.json()\n            else:\n                print(f"✗ Erro de conexión: {resposta.status}")\n                return None\n\n# Executar o bucle de eventos\n# asyncio.run(obter_datos_ia("https://api.galegos.home/ia"))\n```\n\n¿Necesitas axuda para adaptar este código a Javascript, ou queres que deseñemos un algoritmo concreto?'},
+      {keys: ['ia', 'intelixencia artificial', 'modelo', 'linguaxe', 'nos', 'carballo'], response: 'O ecosistema tecnolóxico en Galicia está nun momento crucial. O **Proxecto Nós**, impulsado pola USC e o CESGA, está a crear o maior corpus lingüístico en galego para adestrar modelos de linguaxe propios. Modelos como **Carballo** ou as variantes de BERT galego demostran que un idioma minoritario pode brillar en IA se hai soberanía de datos. Isto reduce o rumbo cultural dos xigantes tecnolóxicos e permite interfaces máis xustas.'},
+      {keys: ['axudas', 'subvencion', 'subvencións', 'xunta', 'amtega', 'igape'], response: 'Se tes un proxecto de IA ou dixitalización en Galicia, existen varios programas importantes:\n\n1. **Bonos de Dixitalización (IGAPE)**: Apoio a autónomos e pemes para contratar servizos de conectividade ou software.\n2. **Programas de IA de AMTEGA**: Convocatorias específicas para o desenvolvemento de pilotos intelixentes na administración e empresas galegas.\n3. **Axudas Neotec (CDTI)**: Subvencións a nivel estatal para empresas de base tecnolóxica, moi solicitadas en Galicia.\n\nRecoméndoche revisar o portal oficial de **AMTEGA** ou do **IGAPE** para ver os prazos e requisitos da última convocatoria.'},
+      {keys: ['ola', 'como estas', 'saudos'], response: '¡Ola! Todo listo na miña terminal para comezar a traballar no teu proxecto. Xuntos podemos programar, perfeccionar código ou explorar ferramentas de IA aplicadas a Galicia. ¿Que temos hoxe na orde do día?'}
+    ],
+    defaultMock: 'O código ben estruturado é a mellor arquitectura para o futuro. Podo axudarche a resolver erros de sintaxe, estruturar bases de datos, integrar API de modelos coma Gemini ou optimizar algoritmos. Indícame o teu obxectivo técnico ou comparte o teu bloque de código.'
+  }
+};
+
+/* Tab Management */
+function switchTab(tab) {
+  activeTab = tab;
+  
+  // Set tab buttons active state
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+  
+  // Set content pane active state
+  document.querySelectorAll('.studio-pane').forEach(pane => {
+    pane.classList.remove('active');
+  });
+  document.getElementById(`pane-${tab}`).classList.add('active');
+
+  // Trigger specific initializations
+  if (tab === 'chat' && chatHistory[activePersona].length === 0) {
+    initChat();
+  } else if (tab === 'tokenizer') {
+    runTokenization();
+  }
+}
+
+/* ── MINERVA CHAT CONTROLLER ── */
+function initChat() {
+  const container = document.getElementById('chat-messages');
+  container.innerHTML = '';
+  
+  // Load Greeting
+  const config = personaConfigs[activePersona];
+  appendMessage('bot', config.greeting);
+  
+  // Load Chips
+  renderChips(config.chips);
+  
+  // Check API Key
+  loadApiKey();
+}
+
+function setPersona(persona) {
+  activePersona = persona;
+  
+  // Update buttons
+  document.querySelectorAll('.persona-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.currentTarget.classList.add('active');
+  
+  // Reset active session and load greeting
+  chatHistory[activePersona] = [];
+  initChat();
+}
+
+function renderChips(chips) {
+  const container = document.getElementById('chat-chips');
+  container.innerHTML = chips.map(c => `
+    <button class="chat-chip" onclick="handleChipClick('${c.replace(/'/g, "\\'")}')">${c}</button>
+  `).join('');
+}
+
+function handleChipClick(text) {
+  document.getElementById('chat-user-input').value = text;
+  sendChatMessage();
+}
+
+function appendMessage(sender, text) {
+  const container = document.getElementById('chat-messages');
+  const emoji = sender === 'user' ? '👤' : personaConfigs[activePersona].emoji;
+  
+  const msgDiv = document.createElement('div');
+  msgDiv.className = `chat-msg ${sender}`;
+  
+  msgDiv.innerHTML = `
+    <div class="msg-avatar">${emoji}</div>
+    <div class="msg-bubble" id="latest-bubble-${sender}"></div>
+  `;
+  
+  container.appendChild(msgDiv);
+  container.scrollTop = container.scrollHeight;
+  
+  const bubble = msgDiv.querySelector('.msg-bubble');
+  
+  if (sender === 'user') {
+    // Plain render
+    bubble.textContent = text;
+  } else {
+    // Beautiful streamed render with Markdown parsing
+    streamResponse(bubble, text);
+  }
+  
+  // Save to memory
+  if (sender !== 'system') {
+    chatHistory[activePersona].push({sender, text});
+  }
+}
+
+function streamResponse(el, text) {
+  // Parse simple markdown to HTML safely
+  let html = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/`(.*?)`/g, "<code>$1</code>")
+    // Code blocks replacement
+    .replace(/```python\n([\s\S]*?)\n```/g, "<pre><code class='language-python'>$1</code></pre>")
+    .replace(/```javascript\n([\s\S]*?)\n```/g, "<pre><code class='language-javascript'>$1</code></pre>")
+    .replace(/```html\n([\s\S]*?)\n```/g, "<pre><code class='language-html'>$1</code></pre>")
+    .replace(/```([\s\S]*?)\n```/g, "<pre><code>$1</code></pre>")
+    .replace(/\n/g, "<br>");
+  
+  // Split into rendering units (words and HTML tags) to prevent rendering raw tags during stream
+  const tokens = html.split(/(\s+|<br>|<pre>[\s\S]*?<\/pre>)/);
+  let currentIdx = 0;
+  el.innerHTML = "";
+  
+  // Add typing indicator element
+  const loader = document.createElement('span');
+  loader.className = 'typing-indicator';
+  loader.innerHTML = '<span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span>';
+  el.appendChild(loader);
+
+  function next() {
+    // Remove loader on first word
+    if (currentIdx === 0 && el.contains(loader)) {
+      el.removeChild(loader);
+    }
+    
+    if (currentIdx < tokens.length) {
+      el.innerHTML += tokens[currentIdx];
+      currentIdx++;
+      const chatArea = document.getElementById('chat-messages');
+      chatArea.scrollTop = chatArea.scrollHeight;
+      setTimeout(next, 18);
+    } else {
+      const chatArea = document.getElementById('chat-messages');
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+  }
+  
+  // Short delay to simulate thinking before typing
+  setTimeout(next, 400);
+}
+
+function sendChatMessage() {
+  const input = document.getElementById('chat-user-input');
+  const text = input.value.trim();
+  if (text === '') return;
+  
+  // User bubble
+  appendMessage('user', text);
+  input.value = '';
+  
+  // Check API Key
+  const apiKey = localStorage.getItem('gemini_api_key');
+  if (apiKey) {
+    callGeminiAPI(text, apiKey);
+  } else {
+    // Fallback to simulated smart mock
+    runMockBotResponse(text);
+  }
+}
+
+function runMockBotResponse(text) {
+  const config = personaConfigs[activePersona];
+  const query = text.toLowerCase();
+  
+  let match = config.mockAnswers.find(ans => 
+    ans.keys.some(k => query.includes(k))
+  );
+  
+  const reply = match ? match.response : config.defaultMock;
+  
+  setTimeout(() => {
+    appendMessage('bot', reply);
+  }, 300);
+}
+
+/* Gemini API Live Connector */
+function saveApiKey() {
+  const input = document.getElementById('api-key-input');
+  const val = input.value.trim();
+  
+  if (val === '') {
+    localStorage.removeItem('gemini_api_key');
+  } else {
+    localStorage.setItem('gemini_api_key', val);
+  }
+  
+  input.value = '';
+  updateApiStatusUI();
+  
+  // Re-notify chat with clean state
+  chatHistory[activePersona] = [];
+  initChat();
+}
+
+function loadApiKey() {
+  updateApiStatusUI();
+}
+
+function updateApiStatusUI() {
+  const key = localStorage.getItem('gemini_api_key');
+  const dot = document.getElementById('api-dot');
+  const txt = document.getElementById('api-status-text');
+  const input = document.getElementById('api-key-input');
+  
+  if (key) {
+    dot.className = 'api-status-dot active';
+    txt.textContent = 'Conectado por API (Gemini Live)';
+    input.placeholder = '••••••••••••••••';
+  } else {
+    dot.className = 'api-status-dot';
+    txt.textContent = 'Modo Simulador Activo';
+    input.placeholder = 'AIzaSy...';
+  }
+}
+
+async function callGeminiAPI(userMsgText, apiKey) {
+  const config = personaConfigs[activePersona];
+  const chatMessagesContainer = document.getElementById('chat-messages');
+  
+  // Append temporary loading bubble
+  const loaderDiv = document.createElement('div');
+  loaderDiv.className = 'chat-msg bot';
+  loaderDiv.innerHTML = `
+    <div class="msg-avatar">${config.emoji}</div>
+    <div class="msg-bubble" style="display:flex; align-items:center; min-height:40px">
+      <span class="typing-indicator">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </span>
+    </div>
+  `;
+  chatMessagesContainer.appendChild(loaderDiv);
+  chatMessagesContainer.scrollTop = chatMessagesContainer.scrollHeight;
+
+  // Build history context for API call
+  let contents = [
+    {
+      "role": "user",
+      "parts": [{"text": `SYSTEM INSTRUCTION: ${config.system}\n\nPor favor, asume este rol en gallego y responde de manera coherente con tus objetivos a partir de ahora.`}]
+    },
+    {
+      "role": "model",
+      "parts": [{"text": `Entendido. A partir de agora responderei baixo o rol de ${config.name} en lingua galega.`}]
+    }
+  ];
+  
+  // Limit to last 8 turns of history to prevent token explosion
+  const recentHistory = chatHistory[activePersona].slice(-8);
+  recentHistory.forEach(msg => {
+    contents.push({
+      "role": msg.sender === 'user' ? 'user' : 'model',
+      "parts": [{"text": msg.text}]
+    });
+  });
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ contents })
+    });
+    
+    // Remove loading bubble
+    chatMessagesContainer.removeChild(loaderDiv);
+    
+    if (!response.ok) {
+      const errData = await response.json();
+      appendMessage('bot', `✗ **Erro de API de Google Gemini**: ${errData.error.message || 'Error desconocido'}. Revisa a túa chave API ou desconéctaa premendo en Gardar baleiro para volver ao simulador.`);
+      return;
+    }
+    
+    const data = await response.json();
+    const replyText = data.candidates[0].content.parts[0].text;
+    appendMessage('bot', replyText);
+    
+  } catch (err) {
+    chatMessagesContainer.removeChild(loaderDiv);
+    appendMessage('bot', `✗ **Erro de rede ou conexión**: ${err.message}. Non se puido contactar cos servidores de Google Gemini.`);
+  }
+}
+
+/* ── CELTIC ART SANDBOX CONTROLLER ── */
+let currentGeneratedPrompt = '';
+
+const artPresets = {
+  lighthouse: {
+    title: 'Torre de Hércules (Faro)',
+    url: 'https://images.unsplash.com/photo-1579294800821-694d95e86143?auto=format&fit=crop&w=1200&q=80',
+    cyberpunk: 'Futuristic Tower of Hercules standing on massive granite cliffs. Rain-slicked shore, glowing violet and cyan neon runes etched into the ancient stone lighthouse. Holographic Celtic galleons gliding over a neon Vigo estuary. Synthwave atmosphere, detailed cyberpunk Vigo docks, Octane Render --ar 16:9 --v 7',
+    mist: 'The ancient stone Tower of Hercules enveloped in dense Atlantic fog. Eerie Celtic silhouettes, coastal mosses, pale stone carvings glowing soft white. Moody grey waves crashing against wet cliffs. Moody, dark fantasy cinematic photography, Leica 35mm --ar 16:9 --style raw',
+    stone: 'Granite carvings of Tower of Hercules covered in ancient glowing green moss and druidic ruins. Megalithic structure, ancient Celtic torque symbols, misty green hills, stormy sunset. Mythic fantasy painting, hyper-detailed stone textures --ar 16:9',
+    watercolor: 'Dreamy watercolor painting of Tower of Hercules. Soft pastel blending, misty estuary, wild Atlantic waves in abstract light, elegant Celtic borders on margins. Lyrical mood, artistic illustration --ar 16:9',
+    octane: 'Hyperrealistic 3D render of a futuristic lighthouse modeled after Tower of Hercules. Metallic Celtic knotwork overlays, gold filigree glowing, dramatic sunset casting long shadows over high-tech ocean spray. Cinematic composition --ar 16:9'
+  },
+  cliffs: {
+    title: 'Praia das Catedrais (Arcos)',
+    url: 'https://images.unsplash.com/photo-1564344400788-b295f9d146db?auto=format&fit=crop&w=1200&q=80',
+    cyberpunk: 'Praia das Catedrais with massive cathedral-like rock arches standing in neon ocean waves. Holographic projections of Celtic runes glowing along the sea arches, rain falling, futuristic neon glitched structures on cliffs. Cyberpunk Galician coast --ar 16:9 --v 7',
+    mist: 'Praia das Catedrais sea arches engulfed in mysterious Atlantic mist at twilight. Moody grey estuary, soft misty glow, ghostly Celtic shapes in the haze, water reflecting flat light. Eerie, atmospheric award-winning landscape photography --ar 16:9',
+    stone: 'Ancient druidic temple carved directly into the natural sea arches of Praia das Catedrais. Glowing green Celtic knots on stone pillars, granite steps disappearing into stormy tides, sunset light. Epic high fantasy concept --ar 16:9',
+    watercolor: 'Delicate watercolor wash of Praia das Catedrais at dawn. Soft blue and gold hues, abstract rock arches meeting quiet waters, hand-drawn Celtic wind symbols floating. Poetic, peaceful --ar 16:9',
+    octane: 'High-fidelity 3D sculpture of Praia das Catedrais arches. Gilded granite engravings, digital waves with perfect fluid dynamics reflecting a starry night sky, hyper-detailed textures. Unreal Engine 5 render style --ar 16:9'
+  },
+  castle: {
+    title: 'Castro de Baroña',
+    url: 'https://images.unsplash.com/photo-1549880338-65ddcdfd017b?auto=format&fit=crop&w=1200&q=80',
+    cyberpunk: 'Castro de Baroña circular granite stone ruins reimagined as a high-tech celta-cyberpunk outpost. Holographic defensive grid shields, data circuits glowing green on ancient rock walls, Vigo estuary in background with flying neon ships --ar 16:9 --v 7',
+    mist: 'The circular stone ruins of Castro de Baroña overlooking a foggy Atlantic shore. Thick white brétema, wet green moss, pale moonlight breaking through sea fog, highlighting mysterious ancient stone carvings. Hauntingly beautiful --ar 16:9',
+    stone: 'Druidic sanctuary at Castro de Baroña during a storm. Ancient stone torcs, monolithic granite circles glowing with green Celtic runes, massive lightning bolt striking the sea in the background. Epic mythic fantasy --ar 16:9',
+    watercolor: 'Impressionist watercolor of Castro de Baroña. Soft emerald green hills, turquoise ocean, bleeding paint textures, abstract Celtic knots framing the circular ruins. Light, poetic mood --ar 16:9',
+    octane: 'Masterpiece 3D render of Castro de Baroña fort. Ancient stones meticulously detailed, gold and emerald circuitry veins running through the ground, misty dawn lighting, volumetric godrays. Premium fantasy visual --ar 16:9'
+  },
+  canyon: {
+    title: 'Cañóns do Sil',
+    url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+    cyberpunk: 'Cañóns do Sil steep river gorge with neon-infused vineyard terraces. Futuristic small ships cruising the glowing water canyon, cybernetic watchtowers on peaks, rainy cyberpunk evening. Breathtaking landscape --ar 16:9',
+    mist: 'The deep canyons of Sil covered in dense morning mist. Soft golden sun rays breaking through grey brétema, quiet river reflecting dark stone walls, silhouettes of ancient oak trees. Serene Atlantic atmosphere --ar 16:9',
+    stone: 'Gorge of Sil styled as ancient Celtic giant statues carved into the canyon cliffs. Druidic shrines on the water edges, stone structures glowing green, sunset hour. High fantasy concept art --ar 16:9',
+    watercolor: 'Lyrical watercolor of Cañóns do Sil. Hues of deep green, violet and gold, bleeding washes representing water and mist, subtle Celtic gold patterns floating on the sky. Romantic illustration --ar 16:9',
+    octane: 'Hyper-detailed 3D render of Sil canyons. Vertical granite cliffs, sparkling emerald river, volumetric foggy atmosphere, perfect cinematic shadows, octane render 8k --ar 16:9'
+  },
+  cathedral: {
+    title: 'Catedral de Santiago',
+    url: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=1200&q=80',
+    cyberpunk: 'Santiago de Compostela cathedral facade in a rainy cyberpunk Vigo style night. Massive holographic saint projections, neon lines tracing the baroque spires, flying vehicles crossing Plaza del Obradoiro. High-tech gothic --ar 16:9',
+    mist: 'The majestic spires of Santiago Cathedral rising above a dense sea of fog. Soft warm light shining from medieval windows, ancient stone statues glowing faintly, mystical dawn sky. Dreamy cinematic photography --ar 16:9',
+    stone: 'Santiago Cathedral facade made entirely of giant interlocking Celtic knotwork stone sculptures. Ancient mossy granite, stone torches glowing with green magical fire, mythological animals carved in Obradoiro square --ar 16:9',
+    watercolor: 'Luminous watercolor sketch of Santiago Cathedral facade. Soft washes of gold, ochre and blue, splatters of rain ink, abstract Celtic cross on sky. Delicate, historical illustration --ar 16:9',
+    octane: 'Luxurious 3D render of Cathedral of Santiago. facade traced with intricate glowing gold filigree and celt circuitry, starry sky, volumetric beams of light pointing upwards, perfect 3D fidelity --ar 16:9'
+  }
+};
+
+function generateCelticArt() {
+  const subject = document.getElementById('art-subject').value;
+  const style = document.getElementById('art-style').value;
+  const lighting = document.getElementById('art-lighting').value;
+  
+  const placeholder = document.getElementById('art-placeholder');
+  const loader = document.getElementById('art-loader');
+  const loaderPct = document.getElementById('art-loader-pct');
+  const loaderMsg = document.getElementById('art-loader-msg');
+  const image = document.getElementById('art-image');
+  const overlay = document.getElementById('art-prompt-overlay');
+  const promptText = document.getElementById('art-prompt-text');
+  
+  // Hide previous results
+  placeholder.style.display = 'none';
+  image.style.display = 'none';
+  overlay.style.display = 'none';
+  
+  // Show loader
+  loader.style.display = 'flex';
+  
+  // Simulated Loading steps
+  const steps = [
+    {pct: 12, msg: 'Analizando xeoloxía e relevos de granito...'},
+    {pct: 35, msg: 'Deseñando patróns e circuítos celtas...'},
+    {pct: 58, msg: 'Invocando brétema e néboas do Atlántico...'},
+    {pct: 78, msg: 'Axustando reflexos de luces e atmosfera de lúa...'},
+    {pct: 94, msg: 'Renderizando texturas na matriz de Galicia...'},
+    {pct: 100, msg: '¡Arte Celta Xerado!'}
+  ];
+  
+  let currentStep = 0;
+  
+  function runStep() {
+    if (currentStep < steps.length) {
+      const step = steps[currentStep];
+      loaderPct.textContent = `${step.pct}%`;
+      loaderMsg.textContent = step.msg;
+      
+      let delay = 350 + Math.random() * 250;
+      if (step.pct === 100) delay = 200;
+      
+      currentStep++;
+      setTimeout(runStep, delay);
+    } else {
+      // Completed
+      loader.style.display = 'none';
+      
+      // Load preset image
+      const preset = artPresets[subject];
+      image.src = preset.url;
+      image.style.display = 'block';
+      
+      // Apply Dynamic Filter Class
+      image.className = `canvas-image img-filter-${style}`;
+      
+      // Get styled prompt text
+      let generatedPrompt = preset[style];
+      // Append lighting detail
+      const lightingText = {
+        golden: ' shot during golden hour with warm sunset glow.',
+        moon: ' shot under a mysterious full moon light with glowing meiga shadows.',
+        storm: ' shot during a dramatic Atlantic storm with giant dark clouds.',
+        dusk: ' shot at blue hour with twilight silver gradients.'
+      };
+      generatedPrompt += lightingText[lighting];
+      
+      currentGeneratedPrompt = generatedPrompt;
+      promptText.textContent = generatedPrompt;
+      overlay.style.display = 'flex';
+    }
+  }
+  
+  setTimeout(runStep, 100);
+}
+
+function copyArtPrompt() {
+  const btn = document.getElementById('btn-copy-art-prompt');
+  navigator.clipboard.writeText(currentGeneratedPrompt).then(() => {
+    btn.textContent = '✓ Prompt Copiado';
+    setTimeout(() => { btn.textContent = 'Copiar Prompt'; }, 2000);
+  });
+}
+
+/* ── NÓS TOKENIZER CONTROLLER ── */
+function setTokenizerText(text) {
+  document.getElementById('tok-input').value = text;
+  runTokenization();
+}
+
+function runTokenization() {
+  const text = document.getElementById('tok-input').value;
+  const output = document.getElementById('tok-output');
+  const statChars = document.getElementById('tok-stat-chars');
+  const statTokens = document.getElementById('tok-stat-tokens');
+  const statRatio = document.getElementById('tok-stat-ratio');
+  
+  statChars.textContent = text.length;
+  
+  if (text.trim() === '') {
+    output.innerHTML = '<span style="color:var(--td); font-style:italic">Representación visual dos tokens...</span>';
+    statTokens.textContent = 0;
+    statRatio.textContent = '0.00';
+    return;
+  }
+  
+  // Custom BPE subword simulation for Galician
+  const words = text.split(/(\s+)/);
+  let tokens = [];
+  
+  words.forEach(w => {
+    if (w.trim() === '') {
+      // Space token
+      tokens.push({text: w, id: 220});
+      return;
+    }
+    
+    // Simulate BPE splits
+    let subwords = [];
+    let temp = w;
+    
+    // Syllable/Prefix rules for Galician
+    if (temp.toLowerCase().startsWith('galic')) {
+      subwords.push(temp.substring(0, 5));
+      subwords.push(temp.substring(5));
+    } else if (temp.toLowerCase().startsWith('intelix')) {
+      subwords.push(temp.substring(0, 5));
+      subwords.push(temp.substring(5, 7));
+      subwords.push(temp.substring(7));
+    } else if (temp.toLowerCase().startsWith('tecnol')) {
+      subwords.push(temp.substring(0, 6));
+      subwords.push(temp.substring(6));
+    } else if (temp.toLowerCase().startsWith('bret')) {
+      subwords.push(temp.substring(0, 4));
+      subwords.push(temp.substring(4));
+    } else if (temp.length > 6) {
+      // Arbitrary split for long words
+      const splitIdx = Math.floor(temp.length / 2);
+      subwords.push(temp.substring(0, splitIdx));
+      subwords.push(temp.substring(splitIdx));
+    } else {
+      subwords.push(temp);
+    }
+    
+    // Add to tokens list with hashed IDs
+    subwords.forEach(sw => {
+      // Simple hash function for token ID
+      let hash = 0;
+      for (let i = 0; i < sw.length; i++) {
+        hash = sw.charCodeAt(i) + ((hash << 5) - hash);
+      }
+      const tokenId = Math.abs(hash % 48000) + 1000;
+      tokens.push({text: sw, id: tokenId});
+    });
+  });
+  
+  // Render tokens colored with HSL backgrounds
+  statTokens.textContent = tokens.length;
+  
+  const wordCount = text.trim().split(/\s+/).length;
+  statRatio.textContent = (tokens.length / wordCount).toFixed(2);
+  
+  output.innerHTML = tokens.map(t => {
+    if (t.text.trim() === '') {
+      // Render spaces as safe dots or special space marker block
+      return `<span class="tok" style="background:rgba(255,255,255,0.04); color:var(--tm); border:1px dashed var(--b)" title="Token ID: ${t.id} (Espazo)">&nbsp;</span>`;
+    }
+    // Set pastel colors based on token text/ID hash
+    const hue = t.id % 360;
+    const bg = `hsl(${hue}, 80%, 75%)`;
+    return `<span class="tok" style="background:${bg}" title="Token ID: ${t.id}">${t.text.replace(/ /g, '•')}</span>`;
+  }).join('');
+}
+
+/* ── PROMPT CUSTOMIZER MODAL CONTROLLER ── */
+let currentActivePromptIndex = null;
+
+function openPromptBuilder(index) {
+  currentActivePromptIndex = index;
+  const p = prompts[index];
+  
+  document.getElementById('pm-title').textContent = p.title;
+  document.getElementById('pm-tool').textContent = p.tool;
+  
+  // Parse variables inside [PLACEHOLDER]
+  const regex = /\[([A-Z0-9_ÁÉÍÓÚÑ]+)\]/g;
+  let match;
+  let vars = [];
+  
+  while ((match = regex.exec(p.text)) !== null) {
+    if (!vars.includes(match[1])) {
+      vars.push(match[1]);
+    }
+  }
+  
+  const varsContainer = document.getElementById('pm-vars');
+  varsContainer.innerHTML = '';
+  
+  if (vars.length === 0) {
+    varsContainer.innerHTML = '<p style="font-size:0.75rem; color:var(--td)">Este prompt non ten variables estandarizadas, pero podes copialo e adaptalo libremente.</p>';
+  } else {
+    varsContainer.innerHTML = vars.map(v => `
+      <div class="p-modal-var-group">
+        <label class="p-modal-var-label">${v}</label>
+        <input type="text" class="p-modal-var-input" data-var="${v}" placeholder="Escribe o valor para [${v}]" oninput="updatePromptPreview()">
+      </div>
+    `).join('');
+  }
+  
+  // Display Modal
+  document.getElementById('prompt-modal').style.display = 'flex';
+  
+  // Initial preview render
+  updatePromptPreview();
+}
+
+function closePromptBuilder() {
+  document.getElementById('prompt-modal').style.display = 'none';
+  currentActivePromptIndex = null;
+}
+
+function updatePromptPreview() {
+  if (currentActivePromptIndex === null) return;
+  const p = prompts[currentActivePromptIndex];
+  let customText = p.text;
+  
+  // Read values
+  document.querySelectorAll('.p-modal-var-input').forEach(input => {
+    const varName = input.dataset.var;
+    const value = input.value.trim() !== '' ? input.value : `[${varName}]`;
+    
+    // Global replace for [VAR]
+    const escapedVar = varName.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regex = new RegExp(`\\[${escapedVar}\\]`, 'g');
+    customText = customText.replace(regex, `**${value}**`);
+  });
+  
+  // Render bold highlights in preview
+  document.getElementById('pm-preview').innerHTML = customText.replace(/\n/g, '<br>');
+}
+
+function copyCustomizedPrompt() {
+  if (currentActivePromptIndex === null) return;
+  const p = prompts[currentActivePromptIndex];
+  let finalRawText = p.text;
+  
+  // Read inputs
+  document.querySelectorAll('.p-modal-var-input').forEach(input => {
+    const varName = input.dataset.var;
+    const value = input.value.trim() !== '' ? input.value : `[${varName}]`;
+    const escapedVar = varName.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const regex = new RegExp(`\\[${escapedVar}\\]`, 'g');
+    finalRawText = finalRawText.replace(regex, value);
+  });
+  
+  // Copy to clipboard
+  const btn = document.getElementById('btn-pm-copy');
+  navigator.clipboard.writeText(finalRawText).then(() => {
+    btn.textContent = '✓ ¡Copiado con éxito!';
+    btn.style.background = '#00c87a';
+    setTimeout(() => {
+      btn.textContent = 'Copiar Prompt Personalizado';
+      btn.style.background = 'var(--g)';
+    }, 2000);
+  });
+}
+
+/* Close modal on escape or background click */
+window.addEventListener('click', (e) => {
+  const modal = document.getElementById('prompt-modal');
+  if (e.target === modal) {
+    closePromptBuilder();
+  }
+});
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closePromptBuilder();
+  }
+});
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  rp();rd();
+  initChat();
+  initCanvas();
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('out');
+    counters();
+    document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
+  },1600);
+});
+</script>
+</body>
+</html>
