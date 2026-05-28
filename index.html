@@ -118,7 +118,8 @@ nav.s{background:rgba(7,10,13,.9);backdrop-filter:blur(24px);border-bottom-color
 .fb{background:transparent;border:1px solid var(--b);color:var(--td);font-family:var(--fj);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 18px;border-radius:5px;cursor:pointer;transition:.2s}
 .fb:hover,.fb.on{border-color:var(--g);color:var(--g);background:var(--gd)}
 .pg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.pc{background:var(--s2);border:1px solid var(--b);border-radius:14px;padding:24px;transition:border-color .2s,transform .2s;display:flex;flex-direction:column}
+.pc{background:var(--s2);border:1px solid var(--b);border-radius:14px;padding:24px;transition:border-color .2s,transform .2s;display:flex;flex-direction:column;position:relative}
+.plock{position:absolute;top:20px;right:20px;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 10px;border-radius:100px;background:rgba(201,162,39,0.08);color:var(--gold);border:1px solid rgba(201,162,39,0.25);font-family:var(--fj);display:flex;align-items:center;gap:4px}
 .pc:hover{border-color:var(--bb);transform:translateY(-2px)}
 .pt{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--g);margin-bottom:10px;font-family:var(--fj)}
 .pn{font-size:.9rem;font-weight:600;color:var(--t);margin-bottom:12px;line-height:1.4;font-family:var(--fj)}
@@ -1652,6 +1653,7 @@ function rp(filter='all'){
     const originalIndex = prompts.findIndex(orig => orig.title === p.title);
     return `
     <div class="pc rv d${(i%3)+1}">
+      <span class="plock">🔒 Curado</span>
       <div class="pt">${p.tool}</div>
       <div class="pn">${p.title}</div>
       <div class="pp">${p.text}</div>
